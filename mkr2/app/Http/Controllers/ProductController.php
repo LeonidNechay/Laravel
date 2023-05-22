@@ -10,6 +10,10 @@ use App\Models\Manufacturer;
 
 class ProductController extends Controller
 {
+    public function __construct(){
+        $this->authorizeResource(Product::class);
+    }
+
     public function index()
     {
         $manufacturer = new ManufacturerController();
@@ -31,6 +35,23 @@ class ProductController extends Controller
             'manufacturer_id' => $request->input('manufacturer_id'),
         ]);
 
+        return \redirect(route('products.index'));
+    }
+
+    public function edit(Product $product)
+    {
+        $manufacturers_list = Manufacturer::all();
+        return view('products.edit', ['manufacturers_list' => $manufacturers_list, 'products' => $product]);
+    }
+
+    public function update(Request $request, Product $product): RedirectResponse
+    {
+        $product->update([
+            'name' => $request->input('name'),
+            'price' => $request->input('price'),
+            'create_date' => $request->input('create_date'),
+            'manufacturer_id' => $request->input('manufacturer_id'),
+        ]);
         return \redirect(route('products.index'));
     }
 
