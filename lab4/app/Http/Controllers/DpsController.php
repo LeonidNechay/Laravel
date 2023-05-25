@@ -11,6 +11,10 @@ use App\Models\Dps;
 
 class DpsController extends Controller
 {
+    public function __construct(){
+        $this->authorizeResource(Dps::class);
+    }
+
     public function index()
     {
         return view('dps', ['dps' => $this->getAllDps()]);
